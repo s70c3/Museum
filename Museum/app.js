@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 var app = express();
 var index = require('./routes/index');
-var users = require('./routes/users');
+
 
 
 var MuseumModel    = require('./app/schemas').MuseumModel;
@@ -69,8 +69,6 @@ var get_by_id_function = function (req, res, model) {
 };
 
 var put_new_name_function = function (req, res, model) {
-    console.log(req.params.id);
-    console.log(req.body.name);
     model.findById(req.params.id, function(err, object) {
 
         if (err)
@@ -128,13 +126,56 @@ router.route('/museums/:id')
     })
 
     .put(function(req, res) {
-        console.log(req.params.name);
         put_new_name_function(req, res, MuseumModel);
     })
     .delete(function(req, res) {
         delete_function(req, res, MuseumModel);
     });
 
+//halls
+router.route('/halls')
+    .post(function (req, res) {
+
+        var hall = new HallModel({
+            name: req.body.name,
+            museum: req.body.museum
+        });
+        hall.save(function (err) {
+            if (err)
+                res.send(err);
+            else
+                res.json({message: 'Hall created!'});
+        });
+
+    })
+
+    .get(function (req, res) {
+        get_function(req, res, HallModel)
+    });
+
+router.route('/halls/:id')
+    .get(function (req, res) {
+        get_by_id_function(req, res, HallModel);
+    })
+
+    .put(function (req, res) {
+        put_new_name_function(req, res, HallModel);
+    })
+    .delete(function (req, res) {
+        delete_function(req, res, HallModel);
+    });
+router.route('/halls/museum/:name')
+    .get(function (req, res) {
+        HallModel
+            .findOne({ name: req.params.name })
+            .populate('museum')
+            .exec(function (err, hall) {
+                if (err) res.send(err);
+                res.json(hall.museum);
+                console.log('The creator is %s', hall.museum.name);
+
+            });
+    });
 
 
 // catch 404 and forward to error handler
