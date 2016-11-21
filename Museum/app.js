@@ -11,7 +11,6 @@ var users = require('./routes/users');
 
 
 var MuseumModel    = require('./app/schemas').MuseumModel;
-var HallModel    = require('./app/schemas').HallModel;
 var ExpoModel    = require('./app/schemas').ExpoModel;
 var HallModel    = require('./app/schemas').HallModel;
 var ExhibitModel    = require('./app/schemas').ExhibitModel;
@@ -53,7 +52,50 @@ router.route('/', function () {
 app.use('/', index);
 app.use('/api', router);
 
+var get_function = function (req, res, model) {
+    model.find(function(err, objects) {
+        if (err)
+            res.send(err);
+        res.json(objects);
+    });
+};
 
+var get_by_id_function = function (req, res, model) {
+    model.findById(req.params.id, function(err, object) {
+        if (err)
+            res.send(err);
+        res.json(object);
+    });
+};
+
+var put_new_name_function = function (req, res, model) {
+    model.findById(req.params.id, function(err, object) {
+
+        if (err)
+            res.send(err);
+
+        object.name = req.body.name;  // update the bears info
+
+        object.save(function(err) {
+            if (err)
+                res.send(err);
+
+            res.json({ message: 'Succefully updated!' });
+        });
+
+    });
+};
+
+var delete_function = function (req, res, model) {
+   model.remove({
+        _id: req.params.id
+    }, function(err, object) {
+        if (err)
+            res.send(err);
+
+        res.json({ message: 'Successfully deleted' });
+    });
+}
 router.route('/museums')
 
     .post(function(req, res) {
@@ -74,54 +116,21 @@ router.route('/museums')
     })
 
     .get(function(req, res) {
-        MuseumModel.find(function(err, museums) {
-            if (err)
-                res.send(err);
-            res.json(museums);
-        });
+       get_function(req, res, MuseumModel)
     });
 
 //get museum by id
 router.route('/museums/:id')
-  .get(function(req, res) {
-        MuseumModel.findById(req.params.id, function(err, museum) {
-            if (err)
-                res.send(err);
-            res.json(museum);
-        });
-    })
+      .get(function(req, res) {
+          get_by_id_function(req, res, MuseumModel);
+      })
 
     .put(function(req, res) {
-
-        // use our bear model to find the bear we want
-        MuseumModel.findById(req.params.id, function(err, museum) {
-
-            if (err)
-                res.send(err);
-
-            museum.name = req.body.name;  // update the bears info
-
-            // save the bear
-            museum.save(function(err) {
-                if (err)
-                    res.send(err);
-
-                res.json({ message: 'Museum updated!' });
-            });
-
-        });
+        put_new_name_function(req, res, MuseumModel);
     })
     .delete(function(req, res) {
-        MuseumModel.remove({
-            _id: req.params.id
-        }, function(err, museum) {
-            if (err)
-                res.send(err);
-
-            res.json({ message: 'Successfully deleted' });
-        });
+        delete_function(req, res, MuseumModel);
     });
-
 
 
 
