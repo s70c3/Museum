@@ -58,21 +58,21 @@ var Exhibit = new Schema({
     hallId: Number
 });
 
+var Tickets = new Schema({
+    name: {type: String, required : true},
+    price: Number
+});
+
 var TicketSale = new Schema({
     date: {type:Date, default: Date.now},
     number: { type: Number, required:true, unique : true},
     staffId: Number,
-    ticket: Number
+    ticket: [Tickets]
 });
 TicketSale.path('number').validate(function (value) {
     return (value > 0);
 });
 
-
-var Tickets = new Schema({
-    name: String,
-    price: Number
-});
 
 var Excursion = new Schema({
     name: String,
