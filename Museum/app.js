@@ -180,7 +180,7 @@ router.route('/tickets')
 
         var ticket = new TicketModel({
             name: req.body.name,
-            museum: req.body.museum
+            price: req.body.price
         });
         console.log(req.body.name);
 // save the bear and check for errors
