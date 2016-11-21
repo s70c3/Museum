@@ -17,7 +17,7 @@ var ExhibitModel    = require('./app/schemas').ExhibitModel;
 var ExcursionModel    = require('./app/schemas').ExcursionModel;
 var StaffModel =  require('./app/schemas').StaffModel;
 var TicketModel =  require('./app/schemas').TicketModel;
-
+var TicketSaleModel =  require('./app/schemas').TicketSaleModel;
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -220,6 +220,43 @@ router.route('/tickets/:id')
     })
     .delete(function (req, res) {
         delete_function(req, res, TicketModel);
+    });
+
+
+//tickets
+router.route('/sales')
+    .post(function (req, res) {
+
+        var sale = new TicketSaleModel({
+            number: req.body.number,
+            staff: req.body.staff,
+            ticket: req.body.ticket
+        });
+// save the bear and check for errors
+        sale.save(function (err) {
+            if (err)
+                res.send(err);
+            else
+                res.json({message: 'Ticket created!'});
+        });
+
+    })
+
+    .get(function (req, res) {
+        get_function(req, res, TicketSaleModel)
+    });
+
+//do smb by id
+router.route('/sales/:id')
+    .get(function (req, res) {
+        get_by_id_function(req, res, TicketSaleModel);
+    })
+
+    .put(function (req, res) {
+        put_new_name_function(req, res, TicketSaleModel);
+    })
+    .delete(function (req, res) {
+        delete_function(req, res, TicketSaleModel);
     });
 
 // catch 404 and forward to error handler
