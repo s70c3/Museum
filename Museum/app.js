@@ -69,6 +69,8 @@ var get_by_id_function = function (req, res, model) {
 };
 
 var put_new_name_function = function (req, res, model) {
+    console.log(req.params.id);
+    console.log(req.body.name);
     model.findById(req.params.id, function(err, object) {
 
         if (err)
@@ -121,11 +123,12 @@ router.route('/museums')
 
 //get museum by id
 router.route('/museums/:id')
-      .get(function(req, res) {
-          get_by_id_function(req, res, MuseumModel);
-      })
+    .get(function(req, res) {
+        get_by_id_function(req, res, MuseumModel);
+    })
 
     .put(function(req, res) {
+        console.log(req.params.name);
         put_new_name_function(req, res, MuseumModel);
     })
     .delete(function(req, res) {

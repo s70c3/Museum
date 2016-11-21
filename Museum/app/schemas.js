@@ -19,21 +19,22 @@ var Schema = mongoose.Schema;
 //Schemas
 
 var Museum = new Schema({
-    name :{type: String, required : true},
-    address : String
+    name :{type: String, required : true, index : true},
+    address : String,
 });
+
 
 var Hall = new Schema({
     name: String,
-    museumId: Number
+    museum:  { type: Schema.ObjectId, ref: 'Museum' }
 });
 
 var Expo = new Schema({
-    name: String,
+    name: { type : String,index : true},
     startDate: Date,
     endDate: Date,
-    museumId: Number,
-    hallId: [Number]
+    museum: { type: Schema.ObjectId, ref: 'Museum' },
+    hall: { type: Schema.ObjectId, ref: 'Hall' }
 });
 
 Expo.path('startDate').validate(function (value) {
@@ -66,8 +67,8 @@ var Tickets = new Schema({
 var TicketSale = new Schema({
     date: {type:Date, default: Date.now},
     number: { type: Number, required:true, unique : true},
-    staffId: Number,
-    ticket: [Tickets]
+    staffId:  { type: Schema.ObjectId, ref: 'Staff' },
+    ticket: { type: Schema.ObjectId, ref: 'Ticket' }
 });
 TicketSale.path('number').validate(function (value) {
     return (value > 0);
@@ -75,19 +76,24 @@ TicketSale.path('number').validate(function (value) {
 
 
 var Excursion = new Schema({
-    name: String,
+    name: { type : String,index : true},
     time: Number,
     price : Number,
     maxPeople: Number,
-    date: Number,
-    staff: [Number]
+    date: { type : Date, index : true},
+    staff:  { type: Schema.ObjectId, ref: 'Staff' }
 });
 
 var Staff = new Schema({
-    name: {type: String, required: true},
-    surname: String,
+    name: {type: String, required: true, index : true},
+    surname: {type: String, required: true, index : true},
     second_name: String,
     age: Number,
+    contact: {
+        phone : Number,
+        email : String,
+        linkedin : String
+    },
     created_at: Date,
     updated_at: Date
 });
