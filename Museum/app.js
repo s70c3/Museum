@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 var app = express();
 var index = require('./routes/index');
-
+var users = require('./routes/users');
 
 
 var MuseumModel    = require('./app/schemas').MuseumModel;
@@ -95,7 +95,9 @@ var delete_function = function (req, res, model) {
 
         res.json({ message: 'Successfully deleted' });
     });
-}
+};
+
+//museum
 router.route('/museums')
 
     .post(function(req, res) {
@@ -119,18 +121,20 @@ router.route('/museums')
        get_function(req, res, MuseumModel)
     });
 
-//get museum by id
+//do smb by id
 router.route('/museums/:id')
     .get(function(req, res) {
         get_by_id_function(req, res, MuseumModel);
     })
 
     .put(function(req, res) {
+        console.log(req.params.name);
         put_new_name_function(req, res, MuseumModel);
     })
     .delete(function(req, res) {
         delete_function(req, res, MuseumModel);
     });
+
 
 //halls
 router.route('/halls')
@@ -177,6 +181,73 @@ router.route('/halls/museum/:name')
             });
     });
 
+        var hall = new HallModel({
+            name: req.body.name,
+            museum: req.body.museum
+        });
+        console.log(req.body.name);
+// save the bear and check for errors
+        hall.save(function (err) {
+            if (err)
+                res.send(err);
+            else
+                res.json({message: 'Hall created!'});
+        });
+
+    })
+
+    .get(function (req, res) {
+        get_function(req, res, HallModel)
+    });
+
+//do smb by id
+router.route('/halls/:id')
+    .get(function (req, res) {
+        get_by_id_function(req, res, HallModel);
+    })
+
+    .put(function (req, res) {
+        put_new_name_function(req, res, HallModel);
+    })
+    .delete(function (req, res) {
+        delete_function(req, res, HallModel);
+    });
+
+//tickets
+router.route('/tickets')
+    .post(function (req, res) {
+
+        var ticket = new TicketModel({
+            name: req.body.name,
+            museum: req.body.museum
+        });
+        console.log(req.body.name);
+// save the bear and check for errors
+        ticket.save(function (err) {
+            if (err)
+                res.send(err);
+            else
+                res.json({message: 'Ticket created!'});
+        });
+
+    })
+
+    .get(function (req, res) {
+        get_function(req, res, TicketModel)
+    });
+
+//do smb by id
+router.route('/tickets/:id')
+    .get(function (req, res) {
+        get_by_id_function(req, res, TicketModel);
+    })
+
+    .put(function (req, res) {
+        put_new_name_function(req, res, TicketModel);
+    })
+    .delete(function (req, res) {
+        delete_function(req, res, TicketModel);
+    });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

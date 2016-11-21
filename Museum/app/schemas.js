@@ -20,17 +20,17 @@ var Schema = mongoose.Schema;
 
 var Museum = new Schema({
     name :{type: String, required : true, index : true},
-    address : String,
+    address : String
 });
 
 
 var Hall = new Schema({
-    name: String,
+    name: {type: String, required : true, index : true},
     museum:  { type: Schema.ObjectId, ref: 'Museum' }
 });
 
 var Expo = new Schema({
-    name: { type : String,index : true},
+    name: {type: String, required : true, index : true},
     startDate: Date,
     endDate: Date,
     museum: { type: Schema.ObjectId, ref: 'Museum' },
@@ -59,8 +59,8 @@ var Exhibit = new Schema({
     hallId: Number
 });
 
-var Tickets = new Schema({
-    name: {type: String, required : true},
+var Ticket = new Schema({
+    name: {type: String, required : true, index : true},
     price: Number
 });
 
@@ -98,14 +98,12 @@ var Staff = new Schema({
     updated_at: Date
 });
 
-
-
 Staff.method.get_full_name = function () {
     return this.name + ' ' + this.second_name + ' ' + this.surname;
-}
+};
 
 module.exports.ExcursionModel = mongoose.model('Excursion', Excursion);
-module.exports.TicketsModel = mongoose.model('Tickets', Tickets);
+module.exports.TicketModel = mongoose.model('Ticket', Ticket);
 module.exports.TicketSaleModel = mongoose.model('TicketSale', TicketSale);
 module.exports.ExhibitModel = mongoose.model('Exhibit', Exhibit );
 module.exports.ExpoModel = mongoose.model('Expo', Expo);
