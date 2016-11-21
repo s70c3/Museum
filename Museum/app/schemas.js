@@ -37,7 +37,7 @@ var Expo = new Schema({
 });
 
 Expo.path('startDate').validate(function (value) {
-    return value>Date(2000,1,1);
+    return value > new Date(2000,1,1);
 });
 
 var Images = new Schema({
@@ -91,10 +91,7 @@ var Staff = new Schema({
     created_at: Date,
     updated_at: Date
 });
-/*
-TicketSale.path('age').validate(function (value) {
-    return (value > 0);
-});*/
+
 
 
 Staff.method.get_full_name = function () {
