@@ -50,7 +50,7 @@ router.route('/', function () {
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/', index);
-
+app.use('/api', router);
 
 
 router.route('/museums')
