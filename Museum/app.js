@@ -16,6 +16,7 @@ var HallModel    = require('./app/schemas').HallModel;
 var ExhibitModel    = require('./app/schemas').ExhibitModel;
 var ExcursionModel    = require('./app/schemas').ExcursionModel;
 var StaffModel =  require('./app/schemas').StaffModel;
+var TicketModel =  require('./app/schemas').TicketModel;
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -179,38 +180,10 @@ router.route('/halls/museum/:name')
                 console.log('The creator is %s', hall.museum.name);
 
             });
-    });
-
-        var hall = new HallModel({
-            name: req.body.name,
-            museum: req.body.museum
-        });
-        console.log(req.body.name);
-// save the bear and check for errors
-        hall.save(function (err) {
-            if (err)
-                res.send(err);
-            else
-                res.json({message: 'Hall created!'});
-        });
-
     })
 
     .get(function (req, res) {
         get_function(req, res, HallModel)
-    });
-
-//do smb by id
-router.route('/halls/:id')
-    .get(function (req, res) {
-        get_by_id_function(req, res, HallModel);
-    })
-
-    .put(function (req, res) {
-        put_new_name_function(req, res, HallModel);
-    })
-    .delete(function (req, res) {
-        delete_function(req, res, HallModel);
     });
 
 //tickets
