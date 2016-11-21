@@ -90,12 +90,18 @@ var Staff = new Schema({
     second_name: String,
     age: Number,
     contact: {
-        phone : Number,
-        email : String,
-        linkedin : String
-    },
-    created_at: Date,
-    updated_at: Date
+        phone: {
+            type: String, validate: {
+                validator: function (v) {
+                    return /\d{3}-\d{3}-\d{4}/.test(v);
+                },
+                message: '{VALUE} is not a valid phone number! Valid Format is xxx-xxx-xxxx '
+            },
+            email: String,
+            linkedin: String
+        },
+        created_at: {type: Date, default: Date.now()}
+    }
 });
 
 Staff.method.get_full_name = function () {
