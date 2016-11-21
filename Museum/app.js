@@ -16,8 +16,8 @@ var HallModel    = require('./app/schemas').HallModel;
 var ExhibitModel    = require('./app/schemas').ExhibitModel;
 var ExcursionModel    = require('./app/schemas').ExcursionModel;
 var StaffModel =  require('./app/schemas').StaffModel;
-var TicketModel = require('./app/schemas').TicketModel;
-
+var TicketModel =  require('./app/schemas').TicketModel;
+var TicketSaleModel =  require('./app/schemas').TicketSaleModel;
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -70,8 +70,6 @@ var get_by_id_function = function (req, res, model) {
 };
 
 var put_new_name_function = function (req, res, model) {
-    console.log(req.params.id);
-    console.log(req.body.name);
     model.findById(req.params.id, function(err, object) {
 
         if (err)
@@ -138,6 +136,7 @@ router.route('/museums/:id')
         delete_function(req, res, MuseumModel);
     });
 
+
 //halls
 router.route('/halls')
     .post(function (req, res) {
@@ -146,8 +145,6 @@ router.route('/halls')
             name: req.body.name,
             museum: req.body.museum
         });
-        console.log(req.body.name);
-// save the bear and check for errors
         hall.save(function (err) {
             if (err)
                 res.send(err);
@@ -161,7 +158,6 @@ router.route('/halls')
         get_function(req, res, HallModel)
     });
 
-//do smb by id
 router.route('/halls/:id')
     .get(function (req, res) {
         get_by_id_function(req, res, HallModel);
@@ -172,6 +168,22 @@ router.route('/halls/:id')
     })
     .delete(function (req, res) {
         delete_function(req, res, HallModel);
+    });
+router.route('/halls/museum/:name')
+    .get(function (req, res) {
+        HallModel
+            .findOne({ name: req.params.name })
+            .populate('museum')
+            .exec(function (err, hall) {
+                if (err) res.send(err);
+                res.json(hall.museum);
+                console.log('The creator is %s', hall.museum.name);
+
+            });
+    })
+
+    .get(function (req, res) {
+        get_function(req, res, HallModel)
     });
 
 //tickets
@@ -208,6 +220,43 @@ router.route('/tickets/:id')
     })
     .delete(function (req, res) {
         delete_function(req, res, TicketModel);
+    });
+
+
+//tickets
+router.route('/sales')
+    .post(function (req, res) {
+
+        var sale = new TicketSaleModel({
+            number: req.body.number,
+            staff: req.body.staff,
+            ticket: req.body.ticket
+        });
+// save the bear and check for errors
+        sale.save(function (err) {
+            if (err)
+                res.send(err);
+            else
+                res.json({message: 'Ticket created!'});
+        });
+
+    })
+
+    .get(function (req, res) {
+        get_function(req, res, TicketSaleModel)
+    });
+
+//do smb by id
+router.route('/sales/:id')
+    .get(function (req, res) {
+        get_by_id_function(req, res, TicketSaleModel);
+    })
+
+    .put(function (req, res) {
+        put_new_name_function(req, res, TicketSaleModel);
+    })
+    .delete(function (req, res) {
+        delete_function(req, res, TicketSaleModel);
     });
 
 // catch 404 and forward to error handler
