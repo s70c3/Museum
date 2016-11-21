@@ -16,6 +16,7 @@ var ExpoModel    = require('./app/schemas').ExpoModel;
 var HallModel    = require('./app/schemas').HallModel;
 var ExhibitModel    = require('./app/schemas').ExhibitModel;
 var ExcursionModel    = require('./app/schemas').ExcursionModel;
+var StaffModel =  require('./app/schemas').StaffModel;
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
