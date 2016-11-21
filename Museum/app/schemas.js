@@ -6,8 +6,6 @@ mongoose.connect('mongodb://localhost:27017/museumDb');
 
 var db = mongoose.connection;
 
-
-
 db.on('error', function (err) {
     console.log.error('connection error:', err.message);
 });
@@ -32,10 +30,10 @@ var Hall = new Schema({
 
 var Expo = new Schema({
     name: String,
-    startDate: Number,
-    endDate: Number,
+    startDate: Date,
+    endDate: Date,
     museumId: Number,
-    hallId: Number
+    hallId: [Number]
 });
 
 Expo.path('startDate').validate(function (value) {
@@ -61,15 +59,15 @@ var Exhibit = new Schema({
 });
 
 var TicketSale = new Schema({
-    date: Number,
-    number: Number,
+    date: {type:Date, default: Date.now},
+    number: { type: Number, required:true, unique : true},
     staffId: Number,
     ticket: Number
 });
-
 TicketSale.path('number').validate(function (value) {
-    return value != null;
-})
+    return (value > 0);
+});
+
 
 var Tickets = new Schema({
     name: String,
@@ -77,12 +75,31 @@ var Tickets = new Schema({
 });
 
 var Excursion = new Schema({
+    name: String,
     time: Number,
     price : Number,
     maxPeople: Number,
-    date: Number
+    date: Number,
+    staff: [Number]
 });
 
+var Staff = new Schema({
+    name: {type: String, required: true},
+    surname: String,
+    second_name: String,
+    age: Number,
+    created_at: Date,
+    updated_at: Date
+});
+/*
+TicketSale.path('age').validate(function (value) {
+    return (value > 0);
+});*/
+
+
+Staff.method.get_full_name = function () {
+    return this.name + ' ' + this.second_name + ' ' + this.surname;
+}
 
 module.exports.ExcursionModel = mongoose.model('Excursion', Excursion);
 module.exports.TicketsModel = mongoose.model('Tickets', Tickets);
@@ -91,3 +108,4 @@ module.exports.ExhibitModel = mongoose.model('Exhibit', Exhibit );
 module.exports.ExpoModel = mongoose.model('Expo', Expo);
 module.exports.HallModel = mongoose.model('Hall', Hall );
 module.exports.MuseumModel = mongoose.model('Museum', Museum);
+module.exports.StaffModel = mongoose.model('Staff', Staff);
