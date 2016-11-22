@@ -88,7 +88,7 @@ var put_new_name_function = function (req, res, model) {
 };
 
 var delete_function = function (req, res, model) {
-   model.remove({
+    model.remove({
         _id: req.params.id
     }, function(err, object) {
         if (err)
@@ -113,13 +113,13 @@ router.route('/museums')
             if (err)
                 res.send(err);
             else
-            res.json({ message: 'Museum created!' });
+                res.json({ message: 'Museum created!' });
         });
 
     })
 
     .get(function(req, res) {
-       get_function(req, res, MuseumModel)
+        get_function(req, res, MuseumModel)
     });
 
 //do smb by id
@@ -312,21 +312,21 @@ router.route('/museums/:id')
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
 
