@@ -9,7 +9,6 @@ var app = express();
 var index = require('./routes/index');
 var users = require('./routes/users');
 
-
 var MuseumModel    = require('./app/schemas').MuseumModel;
 var ExpoModel    = require('./app/schemas').ExpoModel;
 var HallModel    = require('./app/schemas').HallModel;
@@ -258,6 +257,57 @@ router.route('/sales/:id')
     .delete(function (req, res) {
         delete_function(req, res, TicketSaleModel);
     });
+
+
+
+//staff
+router.route('/staff')
+
+    .post(function(req, res) {
+
+        var staff = new StaffModel({
+            name: req.body.name,
+            surname : req.body.surname,
+
+            second_name: req.body.second,
+            age: req.body.age,
+            contact: {
+                phone : req.body.phone,
+                email : req.body.mail,
+                linkedin : req.body.linkedin
+            }
+
+        });
+
+        // save the bear and check for errors
+        staff.save(function(err) {
+            if (err)
+                res.send(err);
+            else
+                res.json({ message: 'Person created!' });
+        });
+
+    })
+
+    .get(function(req, res) {
+        get_function(req, res, StaffModel)
+    });
+
+//do smb by id
+router.route('/museums/:id')
+    .get(function(req, res) {
+        get_by_id_function(req, res, StaffModel);
+    })
+
+    .put(function(req, res) {
+        console.log(req.params.name);
+        put_new_name_function(req, res, StaffModel);
+    })
+    .delete(function(req, res) {
+        delete_function(req, res, StaffModel);
+    });
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
