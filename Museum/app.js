@@ -25,14 +25,16 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+/*
+ var redisClient = require('redis').createClient;
+ var redis = redisClient(6379, 'localhost');
+ */
 
 app.listen(1337, function () {
     console.log('Magic happens on port 1337');
 });
-/*
-var redisClient = require('redis').createClient;
-var redis = redisClient(6379, 'localhost');
-*/
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -69,43 +71,43 @@ var get_by_id_function = function (req, res, model) {
     });
 };
 /*
-var get_by_id_function = function (req, res, model) {
-    redis.get(req.params.id, function (err, reply) {
-        if (err) callback(null);
-        else if (reply) {
-            res.send(JSON.parse(reply));
-            console.log("getted from cache");
-        }
-        else {
-            model.findById(req.params.id, function (err, object) {
-                if (err)
-                    res.send(err);
-                redis.set(req.params.id, JSON.stringify(object));
-                res.json(object);
-            });
-        }
-        ;
-    })
-};
-*/
+ var get_by_id_function = function (req, res, model) {
+ redis.get(req.params.id, function (err, reply) {
+ if (err) callback(null);
+ else if (reply) {
+ res.send(JSON.parse(reply));
+ console.log("getted from cache");
+ }
+ else {
+ model.findById(req.params.id, function (err, object) {
+ if (err)
+ res.send(err);
+ redis.set(req.params.id, JSON.stringify(object));
+ res.json(object);
+ });
+ }
+ ;
+ })
+ };
+ */
 var put_new_name_function = function (req, res, model) {
-    model.findById(req.params.id, function (err, object) {
+    model.findById(req.params.id, function(err, object) {
 
         if (err)
             res.send(err);
 
         object.name = req.body.name;  // update the bears info
 
-        object.save(function (err) {
+        object.save(function(err) {
             if (err)
                 res.send(err);
             /*
-            redis.set(req.params.id, JSON.stringify(object), function (err) {
-                if (err) callback(err);
-                else callback(null);
-            });*/
+             redis.set(req.params.id, JSON.stringify(object), function (err) {
+             if (err) callback(err);
+             else callback(null);
+             });*/
 
-            res.json({message: 'Succefully updated!'});
+            res.json({ message: 'Succefully updated!' });
         });
 
     });
@@ -201,7 +203,7 @@ router.route('/halls/museum/:name')
             .exec(function (err, hall) {
                 if (err) res.send(err);
                 res.json(hall.museum);
-              //  console.log('The creator is %s', hall.museum.name);
+                console.log('The creator is %s', hall.museum.name);
 
             });
     })
