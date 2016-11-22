@@ -319,11 +319,7 @@ router.route('/staff')
 
 //do smb by id
 router.route('/staff/:id')
-<<<<<<< HEAD
     .get(function (req, res) {
-=======
-    .get(function(req, res) {
->>>>>>> refs/remotes/s70c3/master
         get_by_id_function(req, res, StaffModel);
     })
 
