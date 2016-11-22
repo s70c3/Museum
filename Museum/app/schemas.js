@@ -48,7 +48,7 @@ var Exhibit = new Schema({
         images: [String],
         author: String
     },
-    hallId: Number
+    hall: { type: Schema.ObjectId, ref: 'Hall' }
 });
 
 var Ticket = new Schema({
