@@ -9,7 +9,6 @@ var app = express();
 var index = require('./routes/index');
 var users = require('./routes/users');
 
-
 var MuseumModel    = require('./app/schemas').MuseumModel;
 var ExpoModel    = require('./app/schemas').ExpoModel;
 var HallModel    = require('./app/schemas').HallModel;

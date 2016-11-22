@@ -41,19 +41,11 @@ Expo.path('startDate').validate(function (value) {
     return value > new Date(2000,1,1);
 });
 
-var Images = new Schema({
-    kind: {
-        type: String,
-        enum: ['thumbnail', 'detail'],
-        required: true
-    },
-    url: { type: String, required: true }
-});
 
 var Exhibit = new Schema({
     info : {
         name: String,
-        images: [Images],
+        images: [String],
         author: String
     },
     hallId: Number
