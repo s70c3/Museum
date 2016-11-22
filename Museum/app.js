@@ -263,7 +263,7 @@ router.route('/sales')
             if (err)
                 res.send(err);
             else
-                res.json({message: 'Ticket created!'});
+                res.json({message: 'Sale created!'});
         });
 
     })
@@ -352,7 +352,7 @@ router.route('/exhibit')
             if (err)
                 res.send(err);
             else
-                res.json({message: 'Person created!'});
+                res.json({message: 'Exhibit created!'});
         });
 
     })
@@ -373,6 +373,89 @@ router.route('/exhibit/:id')
     })
     .delete(function (req, res) {
         delete_function(req, res, ExhibitModel);
+    });
+
+//excursion
+router.route('/excursion')
+
+    .post(function (req, res) {
+
+        var excursion = new ExcursionModel({
+            name: reg.bogy.name,
+            time: reg.bogy.time,
+            price : reg.bogy.price,
+            maxPeople: reg.bogy.maxPeople,
+            date: Date.parse(reg.bogy.date),
+            staff:  reg.bogy.staff
+        });
+
+        // save the bear and check for errors
+        excursion.save(function (err) {
+            if (err)
+                res.send(err);
+            else
+                res.json({message: 'Excursion created!'});
+        });
+
+    })
+
+    .get(function (req, res) {
+        get_function(req, res, ExcursionModel)
+    });
+
+//do smb by id
+router.route('/excursion/:id')
+    .get(function (req, res) {
+        get_by_id_function(req, res, ExcursionModel);
+    })
+
+    .put(function (req, res) {
+        console.log(req.params.name);
+        put_new_name_function(req, res, ExcursionModel);
+    })
+    .delete(function (req, res) {
+        delete_function(req, res, ExcursionModel);
+    });
+
+//expo
+router.route('/expo')
+
+    .post(function (req, res) {
+
+        var expo = new ExpoModel({
+            name: reg.body.name,
+            startDate: Date.parse(reg.body.startDate),
+            endDate: Date.parse(reg.body.endDate),
+            museum: reg.body.museum,
+            hall: reg.body.hall
+        });
+
+        // save the bear and check for errors
+        expo.save(function (err) {
+            if (err)
+                res.send(err);
+            else
+                res.json({message: 'Expo created!'});
+        });
+
+    })
+
+    .get(function (req, res) {
+        get_function(req, res, ExpoModel)
+    });
+
+//do smb by id
+router.route('/expo/:id')
+    .get(function (req, res) {
+        get_by_id_function(req, res, ExpoModel);
+    })
+
+    .put(function (req, res) {
+        console.log(req.params.name);
+        put_new_name_function(req, res, ExpoModel);
+    })
+    .delete(function (req, res) {
+        delete_function(req, res, ExpoModel);
     });
 
 // catch 404 and forward to error handler
