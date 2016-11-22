@@ -17,6 +17,7 @@ var ExcursionModel    = require('./app/schemas').ExcursionModel;
 var StaffModel =  require('./app/schemas').StaffModel;
 var TicketModel =  require('./app/schemas').TicketModel;
 var TicketSaleModel =  require('./app/schemas').TicketSaleModel;
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
