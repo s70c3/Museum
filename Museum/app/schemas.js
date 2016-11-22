@@ -43,8 +43,8 @@ Expo.path('startDate').validate(function (value) {
 
 
 var Exhibit = new Schema({
+    name: String,
     info : {
-        name: String,
         images: [String],
         author: String
     },
